@@ -1,0 +1,28 @@
+version: "3.8"
+
+networks:
+  postgres:
+    external: true
+
+services:
+  db:
+    image: "postgres:${POSTGRES_VERSION}"
+    container_name: postgress_env
+    environment:
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+      - "POSTGRES_DB=${POSTGRES_DB}"
+    networks:
+      - postgres
+    restart: always
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    depends_on:
+      - db
+    networks:
+      - postgres
+    ports:
+      - 8080:8080
+    restart: always
